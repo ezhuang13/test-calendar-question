@@ -1,7 +1,6 @@
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 
-// https://momentjs.com/docs/
 import moment, { MomentInput } from "moment";
 import React, { FC, useState } from "react";
 import { DayPickerRangeController, isInclusivelyBeforeDay } from "react-dates";
