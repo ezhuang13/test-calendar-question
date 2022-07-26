@@ -56,24 +56,20 @@ const Calendar: FC = ({}) => {
 
   // ------- TODO: implement this function -------
   const isDayBlocked = (calendarDay: moment.Moment) => {
-    return false;
     // ------- Example solution -------
-    // if (endDate && compareDates(calendarDay, endDate, "==")) return false;
+    if (endDate && compareDates(calendarDay, endDate, "==")) return false;
 
-    // // isDayBlocked for site calendar
-    // return campsiteReservedDays.some((reservedDay) => {
-    //   // If a day is reserved, that means you cannot check in on that day or check out any days
-    //   // after the reserved day
-    //   const isCheckOutDay =
-    //     startDate &&
-    //     !endDate &&
-    //     compareDates(moment(reservedDay), startDate, ">");
-    //   if (isCheckOutDay) {
-    //     const dayBefore = calendarDay.clone().subtract(1, "day");
-    //     return compareDates(dayBefore, reservedDay, ">=");
-    //   }
-    //   return compareDates(calendarDay, reservedDay, "==");
-    // });
+    return campsiteReservedDays.some((reservedDay) => {
+      const isCheckOutDay =
+        startDate &&
+        !endDate &&
+        compareDates(moment(reservedDay), startDate, ">");
+      if (isCheckOutDay) {
+        const dayBefore = calendarDay.clone().subtract(1, "day");
+        return compareDates(dayBefore, reservedDay, ">=");
+      }
+      return compareDates(calendarDay, reservedDay, "==");
+    });
   };
 
   return (
