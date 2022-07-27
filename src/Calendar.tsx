@@ -32,7 +32,7 @@ const Calendar: FC = ({}) => {
     isInclusivelyBeforeDay(day, moment().subtract(1, "days"));
 
   // ------- Some helpful functions and variables -------
-  const campsiteReservedDays = ["2022-07-30"]; // Modify as needed for testing
+  const campsiteReservedDays = ["2022-07-30", "2022-08-19"]; // Modify as needed for testing
   const [startDate, setStartDate] = useState<Date | undefined | null>();
   const [endDate, setEndDate] = useState<Date | undefined | null>();
   const compareDates = (
@@ -57,16 +57,17 @@ const Calendar: FC = ({}) => {
   // ------- TODO: implement this function -------
   const isDayBlocked = (calendarDay: moment.Moment) => {
     // ------- Example solution -------
+    // Edge case: if a check out day was selected that is also reserved, don't show it as blocked
     if (endDate && compareDates(calendarDay, endDate, "==")) return false;
 
+    const isCheckOutDay = startDate && !endDate;
     return campsiteReservedDays.some((reservedDay) => {
-      const isCheckOutDay =
-        startDate &&
-        !endDate &&
-        compareDates(moment(reservedDay), startDate, ">");
       if (isCheckOutDay) {
         const dayBefore = calendarDay.clone().subtract(1, "day");
-        return compareDates(dayBefore, reservedDay, ">=");
+        return (
+          compareDates(reservedDay, startDate, ">") &&
+          compareDates(dayBefore, reservedDay, ">=")
+        );
       }
       return compareDates(calendarDay, reservedDay, "==");
     });
